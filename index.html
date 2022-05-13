@@ -14,56 +14,36 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
     const root = document.querySelector("#root");
-    const MinToHours = () => {
-      const [minutes, setMinutes] = React.useState(0);
-      const [flipped, setFlipped] = React.useState(false);
-      const onChange = (event) => {
-        setMinutes(event.target.value); //for updating value
-      };
-      const reset = () => {
-        setMinutes(0);
-      };
-      const onFlip = () => {
-        setFlipped((current) => !current);
-        reset();
-      };
+    const Btn = ({ text, onClick }) => {
       return (
-        <div>
-          <div>
-            <input
-              value={flipped ? Math.round(minutes * 60) : minutes} //삼항연산자
-              id="minutes"
-              placeholder="Minutes"
-              type="number"
-              onChange={onChange}
-              disabled={flipped === true}
-            />
-          </div>
-          <div>
-            <label htmlFOR="hours">Hours</label>
-            <input
-              value={flipped ? minutes : Math.round(minutes / 60)}
-              id="hours"
-              placeholder="Hours"
-              type="number"
-              disabled={flipped === false}
-              onChange={onChange}
-            />
-          </div>
-          <button onClick={reset}>Reset</button>
-          <button onClick={onFlip}>
-            {flipped ? "Hours to Min" : "Min to Hours"}
-          </button>
-        </div>
+        <button
+          onClick={onClick}
+          style={{
+            backgroundColor: "blue",
+            color: "white",
+            padding: "10px, 20px",
+            border: 0,
+            borderRadius: 10,
+            fontSize: 16,
+          }}
+        >
+          {text}
+        </button>
       );
     };
+    const ConfirmBtn = () => {
+      return <button>Save Changes</button>;
+    };
+    const MemorizedBtn = React.memo(Btn);
     const App = () => {
+      const [value, setValue] = React.useState("Save Changes");
+      const changeValue = () => setValue("Revert Changes");
       return (
         <div>
-          <h1>Super Converter</h1>
-          <MinToHours />
-        </div> //컴포넌트 안에 컴포넌트 렌더링 하기
-      );
+          <MemorizedBtn text={value} onClick={changeValue} />
+          <MemorizedBtn text="Continue" />
+        </div> // JSX 내부
+      ); //위의 해당 것들은 컴포넌트임, 거기에 넣는 것들은 prop이 됨 <=> 컴포넌트 X
     };
     ReactDOM.render(<App />, root);
   </script>
