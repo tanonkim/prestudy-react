@@ -14,17 +14,55 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
     const root = document.querySelector("#root");
-    const App = () => {
-      const [counter, setCounter] = React.useState(0);
-      const onClick = () => {
-        //setCounter(counter + 1);
-        setCounter((current) => current + 1); // 함수 전달로도 다음 state를 얻을 수 있다.
+    const MinToHours = () => {
+      const [minutes, setMinutes] = React.useState(0);
+      const [flipped, setFlipped] = React.useState(false);
+      const onChange = (event) => {
+        setMinutes(event.target.value); //for updating value
+      };
+      const reset = () => {
+        setMinutes(0);
+      };
+      const onFlip = () => {
+        setFlipped((current) => !current);
+        reset();
       };
       return (
         <div>
-          <h3>Total Clicks : {counter}</h3>
-          <button onClick={onClick}>Click me</button>
+          <div>
+            <input
+              value={flipped ? Math.round(minutes * 60) : minutes} //삼항연산자
+              id="minutes"
+              placeholder="Minutes"
+              type="number"
+              onChange={onChange}
+              disabled={flipped === true}
+            />
+          </div>
+          <div>
+            <label htmlFOR="hours">Hours</label>
+            <input
+              value={flipped ? minutes : Math.round(minutes / 60)}
+              id="hours"
+              placeholder="Hours"
+              type="number"
+              disabled={flipped === false}
+              onChange={onChange}
+            />
+          </div>
+          <button onClick={reset}>Reset</button>
+          <button onClick={onFlip}>
+            {flipped ? "Hours to Min" : "Min to Hours"}
+          </button>
         </div>
+      );
+    };
+    const App = () => {
+      return (
+        <div>
+          <h1>Super Converter</h1>
+          <MinToHours />
+        </div> //컴포넌트 안에 컴포넌트 렌더링 하기
       );
     };
     ReactDOM.render(<App />, root);
