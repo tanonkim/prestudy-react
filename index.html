@@ -9,39 +9,40 @@
   <body>
     <div id="root"></div>
   </body>
-  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
   <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
   <script type="text/babel">
     const root = document.querySelector("#root");
-    const Btn = ({ text, onClick }) => {
+    const Btn = ({ text, fontSize }) => {
       return (
         <button
-          onClick={onClick}
           style={{
             backgroundColor: "blue",
             color: "white",
             padding: "10px, 20px",
             border: 0,
             borderRadius: 10,
-            fontSize: 16,
+            fontSize: fontSize,
           }}
         >
           {text}
         </button>
       );
     };
+    Btn.propTypes = {
+      text: PropTypes.string.isRequired,
+      fontSize: PropTypes.number,
+    };
     const ConfirmBtn = () => {
       return <button>Save Changes</button>;
     };
-    const MemorizedBtn = React.memo(Btn);
     const App = () => {
-      const [value, setValue] = React.useState("Save Changes");
-      const changeValue = () => setValue("Revert Changes");
       return (
         <div>
-          <MemorizedBtn text={value} onClick={changeValue} />
-          <MemorizedBtn text="Continue" />
+          <Btn text="Save Changes" fontSize={18} />
+          <Btn text="Save" fontSize={18} />
         </div> // JSX 내부
       ); //위의 해당 것들은 컴포넌트임, 거기에 넣는 것들은 prop이 됨 <=> 컴포넌트 X
     };
